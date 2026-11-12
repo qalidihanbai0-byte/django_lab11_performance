@@ -1,0 +1,22 @@
+{
+  "blog_author": {
+    "rows": 200,
+    "sha256": "e20958b6fa3bf3eb6db2c9240fc2678298003032ff51c3bb927efd1cb0593aff"
+  },
+  "blog_tag": {
+    "rows": 50,
+    "sha256": "b756fa05d94f20cacc64b5df8a5abdb59f0131022f0103e6fbed65b79ba82ad4"
+  },
+  "blog_post": {
+    "rows": 20000,
+    "sha256": "d9593c284a41b590f3e961b420d23c02e992ac891ca7507b8daaee5d38379af8"
+  },
+  "blog_post_tags": {
+    "rows": 60000,
+    "sha256": "7844954a0707fadb9ba38ccbdfa6521ed3456fbd75f93e1c490acc4976bf1fd0"
+  },
+  "blog_comment": {
+    "rows": 60000,
+    "sha256": "3f2957bae5fde38e27aedc4888f1f2af50e56d831a2967a5e5fc3934625c0057"
+  }
+}
