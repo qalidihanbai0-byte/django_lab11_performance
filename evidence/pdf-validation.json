@@ -1,0 +1,9 @@
+{
+  "pages": 10,
+  "text_characters": 13052,
+  "kazakh_text_extracted": true,
+  "replacement_characters": false,
+  "rendered_pages": 10,
+  "visual_review": "passed: all 10 rendered pages reviewed; no clipped text, overlap or missing glyphs",
+  "all_40_raw_sql_and_page_measurements_present": true
+}

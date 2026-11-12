@@ -17,7 +17,7 @@ try {
     catch { await new Promise(resolve => setTimeout(resolve, 200)); }
   }
   if (!port) throw new Error('Chrome did not start');
-  const target = await (await fetch(`http://127.0.0.1:${port}/json/new?${encodeURIComponent(url)}`, { method: 'PUT' })).json();
+  const target = await (await fetch(`http://127.0.0.1:${port}/json/new?about:blank`, { method: 'PUT' })).json();
   socket = new WebSocket(target.webSocketDebuggerUrl);
   await new Promise((resolve, reject) => { socket.onopen = resolve; socket.onerror = reject; });
   let nextId = 0;

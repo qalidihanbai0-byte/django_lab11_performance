@@ -1,0 +1,12 @@
+﻿2026-11-12 11:04:56,202 INFO perf GET /posts/?profile=report-miss duration_ms=70.906 sql_queries=0
+2026-11-12 11:04:56,525 INFO perf GET /favicon.ico duration_ms=59.595 sql_queries=0
+2026-11-12 11:05:58,048 INFO perf GET /stats/ duration_ms=21.388 sql_queries=2
+2026-11-12 11:05:58,049 INFO perf GET /stats/ duration_ms=0.583 sql_queries=0
+2026-11-12 11:05:58,184 INFO perf GET /posts/ duration_ms=54.980 sql_queries=2
+2026-11-12 11:05:58,185 INFO perf GET /posts/ duration_ms=0.690 sql_queries=0
+2026-11-12 11:05:58,200 INFO perf GET /posts/ duration_ms=14.486 sql_queries=2
+2026-11-12 11:06:01,184 INFO perf GET /posts/ duration_ms=77.531 sql_queries=2
+2026-11-12 11:06:01,186 INFO perf GET /posts/ duration_ms=0.946 sql_queries=0
+2026-11-12 11:06:01,422 INFO perf GET /stats/ duration_ms=23.345 sql_queries=2
+2026-11-12 11:06:03,212 INFO perf GET /posts/ duration_ms=69.295 sql_queries=2
+2026-11-12 11:06:03,241 INFO perf GET /stats/ duration_ms=26.081 sql_queries=0

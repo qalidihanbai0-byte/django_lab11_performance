@@ -1,0 +1,162 @@
+$ C:\Users\qalid\OneDrive\Desktop\django_lab11_performance\.venv\Scripts\python.exe manage.py check
+System check identified no issues (0 silenced).
+
+Exit code: 0
+
+$ C:\Users\qalid\OneDrive\Desktop\django_lab11_performance\.venv\Scripts\python.exe manage.py test --verbosity 2
+Found 7 test(s).
+Operations to perform:
+  Synchronize unmigrated apps: debug_toolbar, messages, staticfiles
+  Apply all migrations: admin, auth, blog, contenttypes, sessions
+Synchronizing apps without migrations:
+  Creating tables...
+    Running deferred SQL...
+Running migrations:
+  Applying contenttypes.0001_initial... OK
+  Applying auth.0001_initial... OK
+  Applying admin.0001_initial... OK
+  Applying admin.0002_logentry_remove_auto_add... OK
+  Applying admin.0003_logentry_add_action_flag_choices... OK
+  Applying contenttypes.0002_remove_content_type_name... OK
+  Applying auth.0002_alter_permission_name_max_length... OK
+  Applying auth.0003_alter_user_email_max_length... OK
+  Applying auth.0004_alter_user_username_opts... OK
+  Applying auth.0005_alter_user_last_login_null... OK
+  Applying auth.0006_require_contenttypes_0002... OK
+  Applying auth.0007_alter_validators_add_error_messages... OK
+  Applying auth.0008_alter_user_username_max_length... OK
+  Applying auth.0009_alter_user_last_name_max_length... OK
+  Applying auth.0010_alter_group_name_max_length... OK
+  Applying auth.0011_update_proxy_permissions... OK
+  Applying auth.0012_alter_user_first_name_max_length... OK
+  Applying blog.0001_initial... OK
+  Applying blog.0002_post_post_status_created_idx... OK
+  Applying sessions.0001_initial... OK
+System check identified no issues (0 silenced).
+Creating test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
+test_post_save_update_and_delete_invalidate_stats (blog.tests.BlogStatsTests.test_post_save_update_and_delete_invalidate_stats) ... ok
+test_stats_endpoint (blog.tests.BlogStatsTests.test_stats_endpoint) ... ok
+test_stats_miss_and_hit (blog.tests.BlogStatsTests.test_stats_miss_and_hit) ... ok
+test_tag_relations_and_top_ten (blog.tests.BlogStatsTests.test_tag_relations_and_top_ten) ... ok
+test_optimized_objects_keep_body_deferred (blog.tests.PostListTests.test_optimized_objects_keep_body_deferred) ... ok
+test_page_cache_hit_has_no_queries (blog.tests.PostListTests.test_page_cache_hit_has_no_queries) ... ok
+test_post_list_two_queries (blog.tests.PostListTests.test_post_list_two_queries) ... ok
+
+----------------------------------------------------------------------
+Ran 7 tests in 0.184s
+
+OK
+Destroying test database for alias 'default' ('file:memorydb_default?mode=memory&cache=shared')...
+
+
+Exit code: 0
+
+$ C:\Users\qalid\OneDrive\Desktop\django_lab11_performance\.venv\Scripts\python.exe manage.py makemigrations --check --dry-run
+No changes detected
+
+Exit code: 0
+
+$ C:\Users\qalid\OneDrive\Desktop\django_lab11_performance\.venv\Scripts\python.exe manage.py verify_performance
+{
+  "counts": [
+    200,
+    50,
+    20000,
+    60000,
+    60000
+  ],
+  "page_miss_sql": 2,
+  "page_hit_sql": 0,
+  "stats_miss_sql": 2,
+  "stats_hit_sql": 0,
+  "stats_add_delete": "20000 -> 20001 -> 20000; rolled back",
+  "http_posts": 200,
+  "http_stats": 200,
+  "explain": "11 0 61 SEARCH blog_post USING INDEX post_status_created_idx (status=?)\n18 0 45 SEARCH blog_author USING INTEGER PRIMARY KEY (rowid=?)\n21 0 53 SEARCH blog_comment USING COVERING INDEX blog_comment_post_id_580e96ef (post_id=?) LEFT-JOIN\n78 0 0 USE TEMP B-TREE FOR ORDER BY",
+  "popular_tags": [
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 37",
+      "n_posts": 1294
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 09",
+      "n_posts": 1262
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 07",
+      "n_posts": 1240
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 42",
+      "n_posts": 1239
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 49",
+      "n_posts": 1238
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 32",
+      "n_posts": 1237
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 16",
+      "n_posts": 1236
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 04",
+      "n_posts": 1235
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 27",
+      "n_posts": 1235
+    },
+    {
+      "name": "\u0422\u0430\u049b\u044b\u0440\u044b\u043f 43",
+      "n_posts": 1233
+    }
+  ]
+}
+
+Exit code: 0
+
+$ C:\Users\qalid\OneDrive\Desktop\django_lab11_performance\.venv\Scripts\python.exe tools/data_fingerprint.py data_after.json
+{
+  "blog_author": {
+    "rows": 200,
+    "sha256": "e20958b6fa3bf3eb6db2c9240fc2678298003032ff51c3bb927efd1cb0593aff"
+  },
+  "blog_tag": {
+    "rows": 50,
+    "sha256": "b756fa05d94f20cacc64b5df8a5abdb59f0131022f0103e6fbed65b79ba82ad4"
+  },
+  "blog_post": {
+    "rows": 20000,
+    "sha256": "d9593c284a41b590f3e961b420d23c02e992ac891ca7507b8daaee5d38379af8"
+  },
+  "blog_post_tags": {
+    "rows": 60000,
+    "sha256": "7844954a0707fadb9ba38ccbdfa6521ed3456fbd75f93e1c490acc4976bf1fd0"
+  },
+  "blog_comment": {
+    "rows": 60000,
+    "sha256": "3f2957bae5fde38e27aedc4888f1f2af50e56d831a2967a5e5fc3934625c0057"
+  }
+}
+
+Exit code: 0
+
+$ git -c safe.directory=C:/Users/qalid/OneDrive/Desktop/django_lab11_performance log --format=%h %s -6
+cef4e75 step6-cache
+1b8a707 step5-index
+05cdc38 step4-nplus1
+e895512 step3-profiling
+9c6ed61 step2-logging
+d0f58cc step1-seed
+
+Exit code: 0
+
+PASS: all original blog table SHA256 fingerprints match.
+LIVE HTTP 200: /posts/
+LIVE HTTP 200: /stats/
+LIVE HTTP 200: /static/blog/style.css
