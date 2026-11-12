@@ -1,0 +1,11 @@
+PAGE QUERY:
+SELECT "blog_post"."id", "blog_post"."author_id", "blog_post"."title", "blog_post"."status", "blog_post"."created_at", COUNT("blog_comment"."id") AS "n_comments", "blog_author"."id", "blog_author"."name" FROM "blog_post" LEFT OUTER JOIN "blog_comment" ON ("blog_post"."id" = "blog_comment"."post_id") INNER JOIN "blog_author" ON ("blog_post"."author_id" = "blog_author"."id") WHERE "blog_post"."status" = published GROUP BY "blog_post"."id", "blog_post"."author_id", "blog_post"."title", "blog_post"."status", "blog_post"."created_at", "blog_author"."id", "blog_author"."name" ORDER BY "blog_post"."created_at" DESC LIMIT 50
+
+PAGE PLAN:
+11 0 61 SEARCH blog_post USING INDEX post_status_created_idx (status=?)
+18 0 45 SEARCH blog_author USING INTEGER PRIMARY KEY (rowid=?)
+21 0 53 SEARCH blog_comment USING COVERING INDEX blog_comment_post_id_580e96ef (post_id=?) LEFT-JOIN
+78 0 0 USE TEMP B-TREE FOR ORDER BY
+
+BASE FILTER PLAN:
+5 0 61 SEARCH blog_post USING INDEX post_status_created_idx (status=?)

@@ -26,6 +26,11 @@ class Post(models.Model):
     status = models.CharField(max_length=10, choices=Status.choices, default=Status.DRAFT)
     created_at = models.DateTimeField(auto_now_add=True)
 
+    class Meta:
+        indexes = [
+            models.Index(fields=['status', '-created_at'], name='post_status_created_idx'),
+        ]
+
     def __str__(self):
         return self.title
 
