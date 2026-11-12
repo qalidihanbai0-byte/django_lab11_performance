@@ -1,0 +1,8 @@
+{
+  "sql": 2,
+  "sql_ms": 33.38699974119663,
+  "queries": [
+    "SELECT \"blog_post\".\"id\", \"blog_post\".\"author_id\", \"blog_post\".\"title\", \"blog_post\".\"status\", \"blog_post\".\"created_at\", COUNT(\"blog_comment\".\"id\") AS \"n_comments\", \"blog_author\".\"id\", \"blog_author\".\"name\" FROM \"blog_post\" LEFT OUTER JOIN \"blog_comment\" ON (\"blog_post\".\"id\" = \"blog_comment\".\"post_id\") INNER JOIN \"blog_author\" ON (\"blog_post\".\"author_id\" = \"blog_author\".\"id\") WHERE \"blog_post\".\"status\" = 'published' GROUP BY \"blog_post\".\"id\", \"blog_post\".\"author_id\", \"blog_post\".\"title\", \"blog_post\".\"status\", \"blog_post\".\"created_at\", \"blog_author\".\"id\", \"blog_author\".\"name\" ORDER BY \"blog_post\".\"created_at\" DESC LIMIT 50",
+    "SELECT (\"blog_post_tags\".\"post_id\") AS \"_prefetch_related_val_post_id\", \"blog_tag\".\"id\", \"blog_tag\".\"name\" FROM \"blog_tag\" INNER JOIN \"blog_post_tags\" ON (\"blog_tag\".\"id\" = \"blog_post_tags\".\"tag_id\") WHERE \"blog_post_tags\".\"post_id\" IN (19999, 19998, 19997, 19995, 19992, 19990, 19988, 19987, 19986, 19985, 19984, 19981, 19980, 19979, 19977, 19975, 19974, 19972, 19970, 19967, 19966, 19962, 19960, 19959, 19955, 19953, 19951, 19950, 19949, 19948, 19947, 19945, 19944, 19942, 19940, 19939, 19937, 19936, 19935, 19933, 19931, 19929, 19925, 19922, 19921, 19916, 19915, 19914, 19913, 19911)"
+  ]
+}

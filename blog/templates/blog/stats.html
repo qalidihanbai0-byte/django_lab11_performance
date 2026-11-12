@@ -1,0 +1,26 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Блог статистикасы</title>
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+    <header class="site-header"><div class="container brand">Django зертханасы <span>№11</span></div></header>
+    <main class="container">
+        <section class="intro">
+            <p class="eyebrow">Кэштеу · 600 секунд</p>
+            <h1>Блог статистикасы</h1>
+            <p>Барлық жарияланымдар саны: <strong>{{ stats.post_count }}</strong></p>
+            <a href="{% url 'blog:posts' %}">← Жарияланымдарға оралу</a>
+        </section>
+        <section class="post">
+            <h2>Ең танымал 10 тақырып</h2>
+            <ol>{% for tag in stats.popular_tags %}<li>{{ tag.name }}: {{ tag.n_posts }} жарияланым</li>{% empty %}<li>Тақырыптар жоқ.</li>{% endfor %}</ol>
+        </section>
+        <footer>Жарияланым өзгергенде статистика кэші тазартылады.</footer>
+    </main>
+</body>
+</html>

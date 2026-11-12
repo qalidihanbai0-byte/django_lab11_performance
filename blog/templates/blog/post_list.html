@@ -13,9 +13,10 @@
     </header>
     <main class="container">
         <section class="intro">
-            <p class="eyebrow">1-кезең · Бастапқы нұсқа</p>
+            <p class="eyebrow">Django өнімділігі · Оңтайландырылған нұсқа</p>
             <h1>Соңғы жарияланымдар</h1>
             <p>Соңғы жарияланған 50 жазба. Django өнімділігін зерттеуге арналған блог.</p>
+            <a href="{% url 'blog:stats' %}">Блог статистикасы →</a>
         </section>
         <div class="post-list">
             {% for p in posts %}
