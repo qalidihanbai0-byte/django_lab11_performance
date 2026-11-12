@@ -41,6 +41,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'blog.middleware.TimingMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -121,3 +122,31 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+
+LOGGING = {
+    'version': 1,
+    'disable_existing_loggers': False,
+    'formatters': {
+        'perf': {
+            'format': '{asctime} {levelname} {name} {message}',
+            'style': '{',
+        },
+    },
+    'handlers': {
+        'perf_file': {
+            'class': 'logging.FileHandler',
+            'filename': BASE_DIR / 'perf.log',
+            'encoding': 'utf-8',
+            'formatter': 'perf',
+            'level': 'INFO',
+        },
+    },
+    'loggers': {
+        'perf': {
+            'handlers': ['perf_file'],
+            'level': 'INFO',
+            'propagate': False,
+        },
+    },
+}
