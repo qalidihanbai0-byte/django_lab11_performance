@@ -1,0 +1,42 @@
+{
+  "label": "prefetch_related",
+  "python": "3.14.3",
+  "django": "5.2.19",
+  "database": "same db.sqlite3",
+  "method": "Django Client GET; DEBUG=True; toolbar hidden; no network; perf_counter SQL execute wrapper",
+  "cache_mode": "off",
+  "runs": [
+    {
+      "run": 1,
+      "sql": 52,
+      "sql_ms": 97.102599,
+      "page_ms": 360.3656
+    },
+    {
+      "run": 2,
+      "sql": 52,
+      "sql_ms": 113.889001,
+      "page_ms": 263.0069
+    },
+    {
+      "run": 3,
+      "sql": 52,
+      "sql_ms": 110.7629,
+      "page_ms": 275.5671
+    },
+    {
+      "run": 4,
+      "sql": 52,
+      "sql_ms": 102.974397,
+      "page_ms": 254.0184
+    },
+    {
+      "run": 5,
+      "sql": 52,
+      "sql_ms": 110.788199,
+      "page_ms": 257.9949
+    }
+  ],
+  "median_sql_ms": 110.7629,
+  "median_page_ms": 263.0069
+}

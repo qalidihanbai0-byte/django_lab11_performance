@@ -1,0 +1,42 @@
+{
+  "label": "select_related",
+  "python": "3.14.3",
+  "django": "5.2.19",
+  "database": "same db.sqlite3",
+  "method": "Django Client GET; DEBUG=True; toolbar hidden; no network; perf_counter SQL execute wrapper",
+  "cache_mode": "off",
+  "runs": [
+    {
+      "run": 1,
+      "sql": 101,
+      "sql_ms": 109.453298,
+      "page_ms": 429.7488
+    },
+    {
+      "run": 2,
+      "sql": 101,
+      "sql_ms": 112.1158,
+      "page_ms": 309.7551
+    },
+    {
+      "run": 3,
+      "sql": 101,
+      "sql_ms": 120.728901,
+      "page_ms": 326.4979
+    },
+    {
+      "run": 4,
+      "sql": 101,
+      "sql_ms": 133.805998,
+      "page_ms": 346.2034
+    },
+    {
+      "run": 5,
+      "sql": 101,
+      "sql_ms": 128.130101,
+      "page_ms": 341.3203
+    }
+  ],
+  "median_sql_ms": 120.728901,
+  "median_page_ms": 341.3203
+}

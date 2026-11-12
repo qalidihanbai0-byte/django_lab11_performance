@@ -26,7 +26,7 @@
                     <div class="tags">
                         {% for tag in p.tags.all %}<span class="tag">{{ tag.name }}</span>{% endfor %}
                     </div>
-                    <span class="comments">Пікірлер: {{ p.comments.count }}</span>
+                    <span class="comments">Пікірлер: {{ p.n_comments }}</span>
                 </div>
             </article>
             {% empty %}
