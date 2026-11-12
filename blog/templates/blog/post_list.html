@@ -1,0 +1,39 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="kk">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Жарияланымдар · Django өнімділігі</title>
+    <link rel="stylesheet" href="{% static 'blog/style.css' %}">
+</head>
+<body>
+    <header class="site-header">
+        <div class="container brand">Django зертханасы <span>№11</span></div>
+    </header>
+    <main class="container">
+        <section class="intro">
+            <p class="eyebrow">1-кезең · Бастапқы нұсқа</p>
+            <h1>Соңғы жарияланымдар</h1>
+            <p>Соңғы жарияланған 50 жазба. Django өнімділігін зерттеуге арналған блог.</p>
+        </section>
+        <div class="post-list">
+            {% for p in posts %}
+            <article class="post">
+                <div class="post-meta"><span>{{ p.author.name }}</span><time datetime="{{ p.created_at|date:'c' }}">{{ p.created_at|date:"d.m.Y H:i" }}</time></div>
+                <h2>{{ p.title }}</h2>
+                <div class="post-footer">
+                    <div class="tags">
+                        {% for tag in p.tags.all %}<span class="tag">{{ tag.name }}</span>{% endfor %}
+                    </div>
+                    <span class="comments">Пікірлер: {{ p.comments.count }}</span>
+                </div>
+            </article>
+            {% empty %}
+            <p class="post">Әзірге жарияланымдар жоқ.</p>
+            {% endfor %}
+        </div>
+        <footer>№11 зертханалық жұмыс · Django өнімділігі</footer>
+    </main>
+</body>
+</html>
