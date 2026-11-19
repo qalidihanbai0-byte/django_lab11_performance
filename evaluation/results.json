@@ -1,0 +1,748 @@
+[
+  {
+    "id": "Q01",
+    "level": "simple",
+    "question": "Қарағанды қаласында неше клиент тіркелген?",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT COUNT(*) FROM shop_customer WHERE city = 'Қарағанды'",
+    "reference_columns": [
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        10
+      ]
+    ],
+    "raw_response": "SELECT COUNT(DISTINCT customer_id) FROM shop_order",
+    "sql": "SELECT COUNT(DISTINCT customer_id) FROM shop_order LIMIT 100",
+    "columns": [
+      "COUNT(DISTINCT customer_id)"
+    ],
+    "rows": [
+      [
+        50
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q01",
+    "level": "simple",
+    "question": "Қарағанды қаласында неше клиент тіркелген?",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT COUNT(*) FROM shop_customer WHERE city = 'Қарағанды'",
+    "reference_columns": [
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        10
+      ]
+    ],
+    "raw_response": "SELECT COUNT(*) FROM shop_customer WHERE city = 'Karaғанды' LIMIT 100",
+    "sql": "SELECT COUNT(*) FROM shop_customer WHERE city = 'Karaғанды' LIMIT 100",
+    "columns": [
+      "COUNT(*)"
+    ],
+    "rows": [
+      [
+        0
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q02",
+    "level": "simple",
+    "question": "Дүкендегі ең қымбат тауардың бағасы қанша теңге?",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT MAX(price) FROM shop_product",
+    "reference_columns": [
+      "MAX(price)"
+    ],
+    "reference_rows": [
+      [
+        49931.18
+      ]
+    ],
+    "raw_response": "SELECT COUNT(DISTINCT customer_id) FROM shop_order",
+    "sql": "SELECT COUNT(DISTINCT customer_id) FROM shop_order LIMIT 100",
+    "columns": [
+      "COUNT(DISTINCT customer_id)"
+    ],
+    "rows": [
+      [
+        50
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q02",
+    "level": "simple",
+    "question": "Дүкендегі ең қымбат тауардың бағасы қанша теңге?",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT MAX(price) FROM shop_product",
+    "reference_columns": [
+      "MAX(price)"
+    ],
+    "reference_rows": [
+      [
+        49931.18
+      ]
+    ],
+    "raw_response": "SELECT COUNT(*) FROM shop_product WHERE category = 'Кемчілік' LIMIT 100",
+    "sql": "SELECT COUNT(*) FROM shop_product WHERE category = 'Кемчілік' LIMIT 100",
+    "columns": [
+      "COUNT(*)"
+    ],
+    "rows": [
+      [
+        0
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q03",
+    "level": "simple",
+    "question": "Жаңа күйдегі тапсырыстардың жалпы саны қанша?",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT COUNT(*) FROM shop_order WHERE status = 'new'",
+    "reference_columns": [
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        100
+      ]
+    ],
+    "raw_response": "SELECT COUNT(*) FROM shop_orderitem WHERE price > 0",
+    "sql": "SELECT COUNT(*) FROM shop_orderitem WHERE price > 0 LIMIT 100",
+    "columns": [
+      "COUNT(*)"
+    ],
+    "rows": [
+      [
+        1501
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q03",
+    "level": "simple",
+    "question": "Жаңа күйдегі тапсырыстардың жалпы саны қанша?",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT COUNT(*) FROM shop_order WHERE status = 'new'",
+    "reference_columns": [
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        100
+      ]
+    ],
+    "raw_response": "SELECT COUNT(*) FROM shop_orderitem WHERE status = 'paid' LIMIT 100",
+    "sql": null,
+    "columns": null,
+    "rows": null,
+    "error_type": "guard_rejection",
+    "error": "Invalid or unsupported SQLite query.",
+    "correct": false
+  },
+  {
+    "id": "Q04",
+    "level": "medium",
+    "question": "Әр қалаға тиесілі барлық тапсырыс саны қанша? Қала мен санын көрсет.",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT c.city, COUNT(*) FROM shop_order AS o JOIN shop_customer AS c ON o.customer_id = c.id GROUP BY c.city",
+    "reference_columns": [
+      "city",
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        "Алматы",
+        98
+      ],
+      [
+        "Астана",
+        96
+      ],
+      [
+        "Ақтөбе",
+        106
+      ],
+      [
+        "Шымкент",
+        104
+      ],
+      [
+        "Қарағанды",
+        96
+      ]
+    ],
+    "raw_response": "SELECT COUNT(DISTINCT order_id) FROM shop_orderitem",
+    "sql": "SELECT COUNT(DISTINCT order_id) FROM shop_orderitem LIMIT 100",
+    "columns": [
+      "COUNT(DISTINCT order_id)"
+    ],
+    "rows": [
+      [
+        500
+      ]
+    ],
+    "error_type": "column_structure",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q04",
+    "level": "medium",
+    "question": "Әр қалаға тиесілі барлық тапсырыс саны қанша? Қала мен санын көрсет.",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT c.city, COUNT(*) FROM shop_order AS o JOIN shop_customer AS c ON o.customer_id = c.id GROUP BY c.city",
+    "reference_columns": [
+      "city",
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        "Алматы",
+        98
+      ],
+      [
+        "Астана",
+        96
+      ],
+      [
+        "Ақтөбе",
+        106
+      ],
+      [
+        "Шымкент",
+        104
+      ],
+      [
+        "Қарағанды",
+        96
+      ]
+    ],
+    "raw_response": "SELECT COUNT(*) FROM shop_order WHERE status = 'paid'",
+    "sql": "SELECT COUNT(*) FROM shop_order WHERE status = 'paid' LIMIT 100",
+    "columns": [
+      "COUNT(*)"
+    ],
+    "rows": [
+      [
+        350
+      ]
+    ],
+    "error_type": "column_structure",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q05",
+    "level": "medium",
+    "question": "Әр тауар санаты бойынша сатылған тауар бірліктерінің жалпы санын көрсет.",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT p.category, SUM(i.quantity) FROM shop_orderitem AS i JOIN shop_order AS o ON i.order_id = o.id JOIN shop_product AS p ON i.product_id = p.id WHERE o.status = 'paid' GROUP BY p.category",
+    "reference_columns": [
+      "category",
+      "SUM(i.quantity)"
+    ],
+    "reference_rows": [
+      [
+        "Киім",
+        627
+      ],
+      [
+        "Кітаптар",
+        604
+      ],
+      [
+        "Спорт",
+        666
+      ],
+      [
+        "Электроника",
+        727
+      ],
+      [
+        "Үй тауарлары",
+        556
+      ]
+    ],
+    "raw_response": "SELECT p.name, p.price, o.quantity, o.price * o.quantity AS total_price\nFROM shop_product p\nJOIN shop_orderitem oi ON p.id = oi.product_id\nJOIN shop_order o ON oi.order_id = o.id\nWHERE o.status = 'Delivered'\nGROUP BY p.name, p.price, o.quantity, o.price * o.quantity\nORDER BY total_price DESC\nLIMIT 100",
+    "sql": null,
+    "columns": null,
+    "rows": null,
+    "error_type": "guard_rejection",
+    "error": "Invalid or unsupported SQLite query.",
+    "correct": false
+  },
+  {
+    "id": "Q05",
+    "level": "medium",
+    "question": "Әр тауар санаты бойынша сатылған тауар бірліктерінің жалпы санын көрсет.",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT p.category, SUM(i.quantity) FROM shop_orderitem AS i JOIN shop_order AS o ON i.order_id = o.id JOIN shop_product AS p ON i.product_id = p.id WHERE o.status = 'paid' GROUP BY p.category",
+    "reference_columns": [
+      "category",
+      "SUM(i.quantity)"
+    ],
+    "reference_rows": [
+      [
+        "Киім",
+        627
+      ],
+      [
+        "Кітаптар",
+        604
+      ],
+      [
+        "Спорт",
+        666
+      ],
+      [
+        "Электроника",
+        727
+      ],
+      [
+        "Үй тауарлары",
+        556
+      ]
+    ],
+    "raw_response": "SELECT SUM(quantity) FROM shop_orderitem WHERE product_id IN (SELECT id FROM shop_product WHERE category = 'some_category')",
+    "sql": null,
+    "columns": null,
+    "rows": null,
+    "error_type": "guard_rejection",
+    "error": "Unsupported SQL syntax.",
+    "correct": false
+  },
+  {
+    "id": "Q06",
+    "level": "medium",
+    "question": "Тапсырыстарда кездесетін әр санатта неше бөлек тауар бар? Тапсырыс күйіне шектеу қойма.",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT p.category, COUNT(DISTINCT p.id) FROM shop_orderitem AS i JOIN shop_product AS p ON i.product_id = p.id GROUP BY p.category",
+    "reference_columns": [
+      "category",
+      "COUNT(DISTINCT p.id)"
+    ],
+    "reference_rows": [
+      [
+        "Киім",
+        6
+      ],
+      [
+        "Кітаптар",
+        6
+      ],
+      [
+        "Спорт",
+        6
+      ],
+      [
+        "Электроника",
+        6
+      ],
+      [
+        "Үй тауарлары",
+        6
+      ]
+    ],
+    "raw_response": "SELECT DISTINCT category FROM shop_product",
+    "sql": "SELECT DISTINCT category FROM shop_product LIMIT 100",
+    "columns": [
+      "category"
+    ],
+    "rows": [
+      [
+        "Электроника"
+      ],
+      [
+        "Киім"
+      ],
+      [
+        "Кітаптар"
+      ],
+      [
+        "Спорт"
+      ],
+      [
+        "Үй тауарлары"
+      ]
+    ],
+    "error_type": "column_structure",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q06",
+    "level": "medium",
+    "question": "Тапсырыстарда кездесетін әр санатта неше бөлек тауар бар? Тапсырыс күйіне шектеу қойма.",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT p.category, COUNT(DISTINCT p.id) FROM shop_orderitem AS i JOIN shop_product AS p ON i.product_id = p.id GROUP BY p.category",
+    "reference_columns": [
+      "category",
+      "COUNT(DISTINCT p.id)"
+    ],
+    "reference_rows": [
+      [
+        "Киім",
+        6
+      ],
+      [
+        "Кітаптар",
+        6
+      ],
+      [
+        "Спорт",
+        6
+      ],
+      [
+        "Электроника",
+        6
+      ],
+      [
+        "Үй тауарлары",
+        6
+      ]
+    ],
+    "raw_response": "SELECT category, COUNT(*) FROM shop_product GROUP BY category LIMIT 100",
+    "sql": "SELECT category, COUNT(*) FROM shop_product GROUP BY category LIMIT 100",
+    "columns": [
+      "category",
+      "COUNT(*)"
+    ],
+    "rows": [
+      [
+        "Киім",
+        6
+      ],
+      [
+        "Кітаптар",
+        6
+      ],
+      [
+        "Спорт",
+        6
+      ],
+      [
+        "Электроника",
+        6
+      ],
+      [
+        "Үй тауарлары",
+        6
+      ]
+    ],
+    "error_type": "",
+    "error": "",
+    "correct": true
+  },
+  {
+    "id": "Q07",
+    "level": "medium",
+    "question": "Әр қала бойынша болдырылмаған тапсырыстар саны қанша? Қала мен санын көрсет.",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT c.city, COUNT(*) FROM shop_order AS o JOIN shop_customer AS c ON o.customer_id = c.id WHERE o.status <> 'cancelled' GROUP BY c.city",
+    "reference_columns": [
+      "city",
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        "Алматы",
+        82
+      ],
+      [
+        "Астана",
+        88
+      ],
+      [
+        "Ақтөбе",
+        97
+      ],
+      [
+        "Шымкент",
+        95
+      ],
+      [
+        "Қарағанды",
+        88
+      ]
+    ],
+    "raw_response": "SELECT COUNT(DISTINCT order_id) FROM shop_orderitem",
+    "sql": "SELECT COUNT(DISTINCT order_id) FROM shop_orderitem LIMIT 100",
+    "columns": [
+      "COUNT(DISTINCT order_id)"
+    ],
+    "rows": [
+      [
+        500
+      ]
+    ],
+    "error_type": "column_structure",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q07",
+    "level": "medium",
+    "question": "Әр қала бойынша болдырылмаған тапсырыстар саны қанша? Қала мен санын көрсет.",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT c.city, COUNT(*) FROM shop_order AS o JOIN shop_customer AS c ON o.customer_id = c.id WHERE o.status <> 'cancelled' GROUP BY c.city",
+    "reference_columns": [
+      "city",
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        "Алматы",
+        82
+      ],
+      [
+        "Астана",
+        88
+      ],
+      [
+        "Ақтөбе",
+        97
+      ],
+      [
+        "Шымкент",
+        95
+      ],
+      [
+        "Қарағанды",
+        88
+      ]
+    ],
+    "raw_response": "SELECT COUNT(*) FROM shop_order WHERE status <> 'cancelled' LIMIT 100",
+    "sql": "SELECT COUNT(*) FROM shop_order WHERE status <> 'cancelled' LIMIT 100",
+    "columns": [
+      "COUNT(*)"
+    ],
+    "rows": [
+      [
+        450
+      ]
+    ],
+    "error_type": "column_structure",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q08",
+    "level": "complex",
+    "question": "2026 жылғы қыркүйектегі жалпы түсім қанша теңге? Күнді UTC бойынша ал.",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT SUM(i.quantity * i.price) FROM shop_orderitem AS i JOIN shop_order AS o ON i.order_id = o.id WHERE o.status = 'paid' AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'",
+    "reference_columns": [
+      "SUM(i.quantity * i.price)"
+    ],
+    "reference_rows": [
+      [
+        20099443.93
+      ]
+    ],
+    "raw_response": "SELECT COUNT(DISTINCT T1.id) FROM shop_order AS T1 INNER JOIN shop_orderitem AS T2 ON T1.id = T2.order_id INNER JOIN shop_product AS T3 ON T2.product_id = T3.id WHERE T1.created_at >= '2026-01-01 00:00:00' AND T1.created_at < '2027-01-01 00:00:00'",
+    "sql": "SELECT COUNT(DISTINCT T1.id) FROM shop_order AS T1 INNER JOIN shop_orderitem AS T2 ON T1.id = T2.order_id INNER JOIN shop_product AS T3 ON T2.product_id = T3.id WHERE T1.created_at >= '2026-01-01 00:00:00' AND T1.created_at < '2027-01-01 00:00:00' LIMIT 100",
+    "columns": [
+      "COUNT(DISTINCT T1.id)"
+    ],
+    "rows": [
+      [
+        500
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q08",
+    "level": "complex",
+    "question": "2026 жылғы қыркүйектегі жалпы түсім қанша теңге? Күнді UTC бойынша ал.",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT SUM(i.quantity * i.price) FROM shop_orderitem AS i JOIN shop_order AS o ON i.order_id = o.id WHERE o.status = 'paid' AND o.created_at >= '2026-09-01' AND o.created_at < '2026-10-01'",
+    "reference_columns": [
+      "SUM(i.quantity * i.price)"
+    ],
+    "reference_rows": [
+      [
+        20099443.93
+      ]
+    ],
+    "raw_response": "SELECT COUNT(*) FROM shop_order WHERE created_at >= '2026-01-01 00:00:00' AND created_at < '2027-01-01 00:00:00' AND status = 'paid' LIMIT 100",
+    "sql": "SELECT COUNT(*) FROM shop_order WHERE created_at >= '2026-01-01 00:00:00' AND created_at < '2027-01-01 00:00:00' AND status = 'paid' LIMIT 100",
+    "columns": [
+      "COUNT(*)"
+    ],
+    "rows": [
+      [
+        350
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q09",
+    "level": "complex",
+    "question": "Төленген тапсырыстың орташа чегі қанша теңге? Нәтижені екі ондық таңбаға дейін дөңгелекте.",
+    "mode": "baseline",
+    "ordered": false,
+    "reference_sql": "SELECT ROUND(1.0 * SUM(i.quantity * i.price) / COUNT(DISTINCT o.id), 2) FROM shop_orderitem AS i JOIN shop_order AS o ON i.order_id = o.id WHERE o.status = 'paid'",
+    "reference_columns": [
+      "ROUND(1.0 * SUM(i.quantity * i.price) / COUNT(DISTINCT o.id), 2)"
+    ],
+    "reference_rows": [
+      [
+        201085.74
+      ]
+    ],
+    "raw_response": "SELECT COUNT(DISTINCT T1.id) AS average_order_count\nFROM shop_orderitem AS T1\nJOIN shop_order AS T2 ON T1.order_id = T2.id\nJOIN shop_customer AS T3 ON T2.customer_id = T3.id\nWHERE T2.status = 'completed'",
+    "sql": "SELECT COUNT(DISTINCT T1.id) AS average_order_count FROM shop_orderitem AS T1 JOIN shop_order AS T2 ON T1.order_id = T2.id JOIN shop_customer AS T3 ON T2.customer_id = T3.id WHERE T2.status = 'completed' LIMIT 100",
+    "columns": [
+      "average_order_count"
+    ],
+    "rows": [
+      [
+        0
+      ]
+    ],
+    "error_type": "result_mismatch",
+    "error": "The result differs from the reference.",
+    "correct": false
+  },
+  {
+    "id": "Q09",
+    "level": "complex",
+    "question": "Төленген тапсырыстың орташа чегі қанша теңге? Нәтижені екі ондық таңбаға дейін дөңгелекте.",
+    "mode": "improved",
+    "ordered": false,
+    "reference_sql": "SELECT ROUND(1.0 * SUM(i.quantity * i.price) / COUNT(DISTINCT o.id), 2) FROM shop_orderitem AS i JOIN shop_order AS o ON i.order_id = o.id WHERE o.status = 'paid'",
+    "reference_columns": [
+      "ROUND(1.0 * SUM(i.quantity * i.price) / COUNT(DISTINCT o.id), 2)"
+    ],
+    "reference_rows": [
+      [
+        201085.74
+      ]
+    ],
+    "raw_response": "SELECT AVG(price) FROM shop_order WHERE status = 'paid'",
+    "sql": null,
+    "columns": null,
+    "rows": null,
+    "error_type": "guard_rejection",
+    "error": "Invalid or unsupported SQLite query.",
+    "correct": false
+  },
+  {
+    "id": "Q10",
+    "level": "complex",
+    "question": "Тапсырыстардың жалпы санын ай бойынша көрсет. Айды UTC бойынша YYYY-MM форматында бер және ең ерте айдан баста.",
+    "mode": "baseline",
+    "ordered": true,
+    "reference_sql": "SELECT STRFTIME('%Y-%m', created_at) AS month, COUNT(*) FROM shop_order GROUP BY month ORDER BY month",
+    "reference_columns": [
+      "month",
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        "2026-08",
+        69
+      ],
+      [
+        "2026-09",
+        167
+      ],
+      [
+        "2026-10",
+        190
+      ],
+      [
+        "2026-11",
+        74
+      ]
+    ],
+    "raw_response": "SELECT T2.name FROM shop_order AS T1 INNER JOIN shop_orderitem AS T2 ON T1.id = T2.order_id WHERE T1.created_at >= '2023-01-01' ORDER BY T1.created_at ASC LIMIT 1",
+    "sql": null,
+    "columns": null,
+    "rows": null,
+    "error_type": "guard_rejection",
+    "error": "Invalid or unsupported SQLite query.",
+    "correct": false
+  },
+  {
+    "id": "Q10",
+    "level": "complex",
+    "question": "Тапсырыстардың жалпы санын ай бойынша көрсет. Айды UTC бойынша YYYY-MM форматында бер және ең ерте айдан баста.",
+    "mode": "improved",
+    "ordered": true,
+    "reference_sql": "SELECT STRFTIME('%Y-%m', created_at) AS month, COUNT(*) FROM shop_order GROUP BY month ORDER BY month",
+    "reference_columns": [
+      "month",
+      "COUNT(*)"
+    ],
+    "reference_rows": [
+      [
+        "2026-08",
+        69
+      ],
+      [
+        "2026-09",
+        167
+      ],
+      [
+        "2026-10",
+        190
+      ],
+      [
+        "2026-11",
+        74
+      ]
+    ],
+    "raw_response": "SELECT SUM(quantity * price) AS total_revenue FROM shop_orderitem WHERE status = 'paid' LIMIT 100",
+    "sql": null,
+    "columns": null,
+    "rows": null,
+    "error_type": "guard_rejection",
+    "error": "Invalid or unsupported SQLite query.",
+    "correct": false
+  }
+]

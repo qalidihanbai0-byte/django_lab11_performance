@@ -1,0 +1,34 @@
+{
+  "model": "qwen2.5-coder:1.5b",
+  "experiment_at": "2026-11-19T11:14:58+05:00",
+  "question_count": 10,
+  "call_attempts": 20,
+  "golden_sha256": "8f511c296742511590286c92f55256bf499b9de8cf17427e51fa767a15b08988",
+  "prompt_sha256": {
+    "baseline": "bc532b7e0ff0e8627e96ca4358824dd743a194ede1b6da5732dfd97e1dd0cd63",
+    "improved": "b807422c675fa4faeac4169eb2b18dc12cec5f90cf3935c02d1364ea4812bda7"
+  },
+  "modes": {
+    "baseline": {
+      "correct": 0,
+      "incorrect": 10,
+      "accuracy_percent": 0.0,
+      "error_types": {
+        "result_mismatch": 5,
+        "column_structure": 3,
+        "guard_rejection": 2
+      }
+    },
+    "improved": {
+      "correct": 1,
+      "incorrect": 9,
+      "accuracy_percent": 10.0,
+      "error_types": {
+        "result_mismatch": 3,
+        "guard_rejection": 4,
+        "column_structure": 2
+      }
+    }
+  },
+  "difference_percentage_points": 10.0
+}

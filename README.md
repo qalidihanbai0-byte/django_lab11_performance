@@ -1,4 +1,69 @@
-﻿# Django өнімділігі — лабораторная №11
+﻿# Django — лабораторные №11 и №12
+
+## Week 12 · Дерекқор және жасанды интеллект
+
+Приложение `shop` преобразует вопрос в SQLite SELECT через Ollama.
+Страница `/report/` показывает SQL и результат, а вопросы записываются
+в `QueryLog`.
+
+### Запуск на Windows
+
+Установите Ollama и запустите его приложение или `ollama serve`, если сервис
+ещё не работает. Для эксперимента нужна модель `qwen2.5-coder:1.5b`.
+Проверьте её командой `ollama list`. Для загрузки используйте
+`ollama pull qwen2.5-coder:1.5b`.
+
+```powershell
+# На чистой машине
+python -m venv .venv
+.\.venv\Scripts\python.exe -m pip install -r requirements.txt
+
+# Создайте .env из примера, если локального файла ещё нет
+Copy-Item .env.example .env
+.\.venv\Scripts\python.exe manage.py migrate
+.\.venv\Scripts\python.exe manage.py seed_shop
+.\.venv\Scripts\python.exe manage.py runserver 127.0.0.1:8012
+```
+
+Откройте http://127.0.0.1:8012/report/. `seed_shop` заполняет пустые
+таблицы магазина и при повторном запуске пропускает заполнение.
+
+### Проверки и оценка
+
+```powershell
+.\.venv\Scripts\python.exe manage.py check
+.\.venv\Scripts\python.exe manage.py test
+.\.venv\Scripts\python.exe manage.py makemigrations --check --dry-run
+.\.venv\Scripts\python.exe -X utf8 manage.py evalsql --verify-only
+.\.venv\Scripts\python.exe -X utf8 manage.py evalsql
+```
+
+Последняя команда делает 20 реальных вызовов Ollama и обновляет
+`evaluation/results.json`, `evaluation/results.csv` и `evaluation/summary.json`.
+Сравниваются количество и позиции столбцов, значения, NULL и кратность строк.
+Псевдонимы не сравниваются, порядок проверяется для Q10, дробные значения
+нормализуются до шести знаков.
+
+Опубликованные результаты получены 19 ноября 2026 года на текущей базе.
+`seed_shop` привязывает даты заказов ко дню заполнения, поэтому результаты
+вопросов о датах на новой базе могут отличаться.
+
+| Промпт | Правильных результатов | Execution accuracy |
+|---|---:|---:|
+| baseline | 0/10 | 0% |
+| improved | 1/10 | 10% |
+
+Разница составила +10 п. п. Единственный зачёт improved (Q06) зависит от
+данных: модель посчитала весь каталог, а каждый товар в нём встречается
+в заказах. Подробности приведены в [анализе ошибок](evaluation/analysis.md).
+
+SQLGlot разрешает один SELECT к четырём таблицам `shop` и проверяет имена
+столбцов. SQLite повторно ограничивает доступ через authorizer. Отчёт
+выполняется в отдельном соединении с `mode=ro`, `PRAGMA query_only=ON`,
+лимитом 100 строк и тайм-аутом 2 секунды. Журнал записывается через Django ORM.
+Корректность бизнес-логики оценивается отдельно по эталонным результатам.
+
+## Week 11
 
 Выполнены этапы 1–7 в существующем проекте. Windows 11, Python 3.14.3,
 Django 5.2.19, SQLite, HTML/CSS, django-debug-toolbar 8.0.0.
