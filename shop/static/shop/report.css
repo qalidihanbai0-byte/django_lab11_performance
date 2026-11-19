@@ -1,0 +1,104 @@
+:root {
+    color-scheme: light;
+    font-family: system-ui, sans-serif;
+    color: #142d28;
+    background: #eff5f2;
+    line-height: 1.5;
+}
+
+* { box-sizing: border-box; }
+body { margin: 0; }
+
+.report {
+    width: min(69rem, calc(100% - 2rem));
+    margin-inline: auto;
+    padding-block: clamp(2rem, 7vw, 5rem);
+}
+
+h1 {
+    margin: 0 0 1.5rem;
+    max-width: 23ch;
+    font-size: clamp(1.9rem, 5vw, 3.5rem);
+    line-height: 1.12;
+    letter-spacing: -.04em;
+}
+
+h2 { margin: 0 0 .85rem; font-size: 1.1rem; }
+.question-layout { display: grid; grid-template-columns: minmax(0, 2fr) minmax(0, 1fr); gap: 1rem; }
+
+.panel {
+    min-width: 0;
+    padding: clamp(1rem, 3vw, 1.5rem);
+    border: 1px solid #ceded6;
+    border-radius: 1rem;
+    background: #fff;
+}
+
+label { display: block; margin-bottom: .5rem; font-weight: 650; }
+textarea, button { font: inherit; }
+
+textarea {
+    display: block;
+    width: 100%;
+    min-height: 7rem;
+    padding: .75rem;
+    resize: vertical;
+    color: inherit;
+    border: 1px solid #80978d;
+    border-radius: .6rem;
+}
+
+button { cursor: pointer; }
+:focus-visible { outline: 3px solid #14735b; outline-offset: 3px; }
+
+.submit {
+    margin-top: 1rem;
+    padding: .65rem 1.15rem;
+    color: #fff;
+    background: #12604d;
+    border: 0;
+    border-radius: .6rem;
+    font-weight: 650;
+}
+
+.submit:hover { background: #0c493a; }
+
+.examples button {
+    display: block;
+    width: 100%;
+    padding: .55rem .65rem;
+    color: #154b3e;
+    background: #f0f7f3;
+    border: 1px solid #d4e5dc;
+    border-radius: .6rem;
+    text-align: left;
+}
+
+.examples button + button { margin-top: .55rem; }
+.examples button:hover { background: #e2efe8; }
+.result, .notice { margin: 1rem 0 0; }
+.notice { padding: .8rem 1rem; background: #e0eee6; border-radius: .6rem; }
+.error { background: #fcecea; }
+.error, .errorlist { color: #84251d; }
+.errorlist { padding-inline-start: 1.25rem; }
+.empty { margin: 0; }
+
+pre {
+    margin: 0;
+    padding: .85rem;
+    border-radius: .6rem;
+    color: #ecfaf3;
+    background: #173830;
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+}
+
+.table-scroll { overflow-x: auto; }
+table { border-collapse: collapse; width: 100%; }
+th, td { padding: .65rem; text-align: left; border-bottom: 1px solid #dce7e0; }
+th { background: #e8f2eb; }
+td { overflow-wrap: anywhere; }
+
+@media (max-width: 42rem) {
+    .question-layout { grid-template-columns: minmax(0, 1fr); }
+}

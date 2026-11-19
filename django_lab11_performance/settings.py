@@ -127,7 +127,12 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 INTERNAL_IPS = ['127.0.0.1', '::1']
-DEBUG_TOOLBAR_CONFIG = {'RENDER_PANELS': True}
+DEBUG_TOOLBAR_CONFIG = {
+    'RENDER_PANELS': True,
+    'SHOW_TOOLBAR_CALLBACK': 'shop.views.show_toolbar_outside_report',
+    # The custom callback delegates to show_toolbar, which already checks DEBUG.
+    'IS_RUNNING_TESTS': False,
+}
 
 CACHES = {
     'default': {

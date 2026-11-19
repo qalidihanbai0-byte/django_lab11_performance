@@ -1,0 +1,71 @@
+{% load static %}
+<!doctype html>
+<html lang="kk">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Жасанды интеллект арқылы есеп алу</title>
+    <link rel="stylesheet" href="{% static 'shop/report.css' %}">
+</head>
+<body>
+    <main class="report">
+        <h1>Жасанды интеллект арқылы есеп алу</h1>
+        <div class="question-layout">
+            <form class="panel" method="post" action="{% url 'shop:report' %}">
+                {% csrf_token %}
+                {{ form.question.label_tag }}
+                {{ form.question }}
+                {{ form.question.errors }}
+                <button class="submit" type="submit">Есеп алу</button>
+            </form>
+            <aside class="panel examples" aria-labelledby="examples-title">
+                <h2 id="examples-title">Сұрақ үлгілері</h2>
+                <button type="button">Әр қалада қанша клиент бар?</button>
+                <button type="button">Тауар санаттары бойынша жалпы түсім қанша?</button>
+                <button type="button">Қандай тапсырыстар тоқтатылды?</button>
+            </aside>
+        </div>
+
+        {% if error %}<p class="notice error" role="alert">{{ error }}</p>{% endif %}
+        {% if log_error %}<p class="notice error" role="alert">{{ log_error }}</p>{% endif %}
+        {% if sql %}
+            <section class="panel result" aria-labelledby="sql-title">
+                <h2 id="sql-title">Жасалған SQL</h2>
+                <pre><code>{{ sql }}</code></pre>
+            </section>
+        {% endif %}
+        {% if no_answer %}
+            <p class="notice">Сұраққа жауап табылмады</p>
+        {% elif columns %}
+            <section class="panel result" aria-labelledby="result-title">
+                <h2 id="result-title">Есеп нәтижесі</h2>
+                {% if rows %}
+                    <div class="table-scroll" role="region" aria-labelledby="result-title" tabindex="0">
+                        <table aria-labelledby="result-title">
+                            <thead>
+                                <tr>{% for column in columns %}<th scope="col">{{ column }}</th>{% endfor %}</tr>
+                            </thead>
+                            <tbody>
+                                {% for row in rows %}
+                                    <tr>{% for value in row %}<td>{{ value|default_if_none:"—" }}</td>{% endfor %}</tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                {% else %}
+                    <p class="empty">Деректер табылмады</p>
+                {% endif %}
+            </section>
+        {% endif %}
+    </main>
+    <script>
+        const question = document.getElementById("{{ form.question.id_for_label|escapejs }}");
+        for (const example of document.querySelectorAll(".examples button")) {
+            example.addEventListener("click", () => {
+                question.value = example.textContent.trim();
+                question.focus();
+            });
+        }
+    </script>
+</body>
+</html>

@@ -6,10 +6,11 @@ from tempfile import TemporaryDirectory
 from types import SimpleNamespace
 from unittest.mock import patch
 
-from django.test import SimpleTestCase
+from django.test import Client, SimpleTestCase, TestCase
 
 from .guard import NO_ANSWER_SQL, UnsafeSQLError, extract_sql, run_readonly, validate_sql
 from .llm import ask_llm, ask_sql
+from .models import QueryLog
 from .prompts import build_system_prompt
 
 
@@ -165,3 +166,91 @@ class LLMTests(SimpleTestCase):
             messages=[{'role': 'system', 'content': 'System'},
                       {'role': 'user', 'content': 'User'}],
         )
+
+
+@patch('shop.llm.ask_llm')
+@patch('shop.views.run_readonly')
+class ReportViewTests(TestCase):
+    path = '/report/'
+    question = 'Әр қалада қанша клиент бар?'
+
+    def test_get_shows_form_with_csrf_and_no_log(self, run, ask):
+        response = Client(enforce_csrf_checks=True).get(self.path, HTTP_HOST='localhost')
+        self.assertContains(response, 'Жасанды интеллект арқылы есеп алу')
+        self.assertContains(response, 'name="csrfmiddlewaretoken"')
+        self.assertFalse(response.context['form'].is_bound)
+        self.assertEqual(
+            Client(enforce_csrf_checks=True).post(
+                self.path, {'question': self.question}, HTTP_HOST='localhost'
+            ).status_code,
+            403,
+        )
+        ask.assert_not_called()
+        run.assert_not_called()
+        self.assertFalse(QueryLog.objects.exists())
+
+    def test_post_shows_sql_and_rows_and_logs_question(self, run, ask):
+        ask.return_value = 'SELECT city FROM shop_customer LIMIT 1'
+        run.return_value = (['city'], [('Алматы',)])
+        response = self.client.post(self.path, {'question': f' {self.question} '}, HTTP_HOST='localhost')
+        self.assertContains(response, ask.return_value)
+        self.assertContains(response, '<th scope="col">city</th>', html=True)
+        self.assertContains(response, '<td>Алматы</td>', html=True)
+        ask.assert_called_once_with(build_system_prompt('improved'), self.question)
+        run.assert_called_once_with(ask.return_value)
+        log = QueryLog.objects.get()
+        self.assertEqual((log.question, log.sql, log.error), (self.question, ask.return_value, ''))
+
+    def test_unsafe_model_sql_is_rejected_and_logged(self, run, ask):
+        ask.return_value = 'DELETE FROM shop_customer'
+        response = self.client.post(self.path, {'question': self.question}, HTTP_HOST='localhost')
+        message = 'Жасалған SQL сұрауы қауіпсіздік тексеруінен өтпеді.'
+        self.assertContains(response, message)
+        self.assertNotContains(response, ask.return_value)
+        run.assert_not_called()
+        log = QueryLog.objects.get()
+        self.assertEqual((log.question, log.sql, log.error), (self.question, '', message))
+
+    def test_invalid_questions_do_not_call_model(self, run, ask):
+        for question, message in (
+            ('   ', 'Сұрағыңызды жазыңыз.'),
+            ('x' * 301, 'Сұрақ 300 таңбадан аспауы керек.'),
+        ):
+            with self.subTest(question=question):
+                response = self.client.post(self.path, {'question': question}, HTTP_HOST='localhost')
+                self.assertContains(response, message)
+        ask.assert_not_called()
+        run.assert_not_called()
+        self.assertFalse(QueryLog.objects.exists())
+
+    def test_no_answer_is_logged_without_execution(self, run, ask):
+        ask.return_value = NO_ANSWER_SQL
+        response = self.client.post(self.path, {'question': self.question}, HTTP_HOST='localhost')
+        self.assertContains(response, 'Сұраққа жауап табылмады')
+        run.assert_not_called()
+        log = QueryLog.objects.get()
+        self.assertEqual((log.question, log.sql, log.error), (self.question, NO_ANSWER_SQL, ''))
+
+    def test_empty_result_has_its_own_message(self, run, ask):
+        ask.return_value = 'SELECT city FROM shop_customer LIMIT 0'
+        run.return_value = (['city'], [])
+        response = self.client.post(self.path, {'question': self.question}, HTTP_HOST='localhost')
+        self.assertContains(response, 'Деректер табылмады')
+
+    def test_sql_and_table_values_are_html_escaped(self, run, ask):
+        ask.return_value = "SELECT '<b>text</b>' AS city"
+        run.return_value = (['<b>city</b>'], [('<b>text</b>',)])
+        response = self.client.post(self.path, {'question': self.question}, HTTP_HOST='localhost')
+        self.assertContains(response, '&lt;b&gt;text&lt;/b&gt;', count=2)
+        self.assertContains(response, '&lt;b&gt;city&lt;/b&gt;')
+        self.assertNotContains(response, '<b>text</b>')
+
+    def test_execution_error_hides_diagnostics(self, run, ask):
+        ask.return_value = 'SELECT city FROM shop_customer'
+        run.side_effect = sqlite3.OperationalError('internal path or diagnostic')
+        response = self.client.post(self.path, {'question': self.question}, HTTP_HOST='localhost')
+        self.assertContains(response, 'Есепті орындау мүмкін болмады.')
+        self.assertNotContains(response, 'internal path or diagnostic')
+        log = QueryLog.objects.get()
+        self.assertEqual(log.sql, ask.return_value + ' LIMIT 100')
+        self.assertNotIn('internal path or diagnostic', log.error)
