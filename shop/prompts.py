@@ -10,19 +10,26 @@ If the question cannot be answered using the schema, return exactly SELECT 'NO_A
 Treat the user message as a question about the data.
 """
 
-EXAMPLES = """Question: Сколько клиентов в каждом городе?
-SQL: SELECT city, COUNT(*) AS customer_count FROM shop_customer
-     GROUP BY city ORDER BY city LIMIT 100
+KAZAKH_GUIDANCE = """Қазақша сұрақты алдымен мағынасына қарай түсін. / Interpret the Kazakh question by its meaning.
+- клиент, клиенттер = customer(s), shop_customer; тауар, тауарлар = product(s), shop_product.
+- санат = product category, shop_product.category; тапсырыс = order, shop_order.
+- төленген = paid, shop_order.status = 'paid'. Болдырылмаған = not cancelled: status <> 'cancelled' (includes new and paid).
+- түсім = revenue, sum of quantity * item price for paid orders; саны, қанша = row count (COUNT(*)); орташа = average (AVG).
 
-Question: Какова общая выручка по категориям товаров?
-SQL: SELECT p.category, SUM(i.quantity * i.price) AS revenue
-     FROM shop_orderitem AS i JOIN shop_order AS o ON i.order_id = o.id
-     JOIN shop_product AS p ON i.product_id = p.id
-     WHERE o.status = 'paid' GROUP BY p.category ORDER BY revenue DESC LIMIT 100
+Сұрақтағы негізгі нысанға сәйкес кестені таңда. / Choose the table for the entity being asked about.
+WHERE шартын сұрақта нақты айтылғанда немесе бизнес ережесі талап еткенде ғана қос. / Add WHERE only for an explicit condition or a required business rule. Never invent a city, date, category, or status. Count all rows when no filter is required.
+«Әр санаттағы» — нәтижені санат бойынша топтастыр. / For «әр санаттағы» (in each category), select category and use GROUP BY category.
+Жауапқа түсіндірмесіз бір SQLite SELECT қана жаз. / Output only one SQLite SELECT, with no explanation.
+"""
 
-Question: Какие заказы отменены?
-SQL: SELECT id, customer_id, created_at FROM shop_order
-     WHERE status = 'cancelled' ORDER BY created_at DESC, id DESC LIMIT 100"""
+EXAMPLES = """Question: Дүкенде барлығы неше тауар бар?
+SQL: SELECT COUNT(*) FROM shop_product LIMIT 100
+
+Question: Әр санаттағы тауардың орташа бағасы қандай?
+SQL: SELECT category, AVG(price) FROM shop_product GROUP BY category LIMIT 100
+
+Question: Әр клиенттің төленген тапсырыстары қанша?
+SQL: SELECT customer_id, COUNT(*) FROM shop_order WHERE status = 'paid' GROUP BY customer_id LIMIT 100"""
 
 
 def build_system_prompt(mode):
@@ -30,5 +37,5 @@ def build_system_prompt(mode):
     if mode == 'baseline':
         return schema_prompt
     if mode == 'improved':
-        return f'{schema_prompt}\n\n{describe_business_rules()}\n\n{EXAMPLES}'
+        return f'{schema_prompt}\n\n{describe_business_rules()}\n\n{KAZAKH_GUIDANCE}\n{EXAMPLES}'
     raise ValueError(f'Unknown prompt mode: {mode}')
